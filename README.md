@@ -1,37 +1,29 @@
-## Welcome to GitHub Pages
+## idades!
 
-You can use the [editor on GitHub](https://github.com/crineu/crineu.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Nosso amigo Henriquinho nasceu em <span id="birthdayHenrique"></span>.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Nosso amigo Eduard nasceu em <span id="birthDayEduardo"></span>
 
-### Markdown
+Hoje Eduardinho tem <span id="idadeEduardo"></span>, a mesma idade que Henriquinho tinha em <span id="dataHenrique"></span> (há <span id="tempoPassado"></span> dias).
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Fascinante.
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+<div id="para1"></div>
 
-- Bulleted
-- List
+<script src="/moment.min.js"></script>
+<script type="text/javascript">
+    var nascimentoHenrique = moment('20130826');
+    var nascimentoEduardo  = moment('20161201');
 
-1. Numbered
-2. List
+    document.getElementById("birthdayHenrique").innerHTML = nascimentoHenrique.format('LL');
+    document.getElementById("birthDayEduardo").innerHTML = nascimentoEduardo.format('LL');
 
-**Bold** and _Italic_ and `Code` text
+    var diasVidaEduardo = moment().diff(nascimentoEduardo, 'days');
+    var dataHenriqueMesmaIdade = nascimentoHenrique.add(diasVidaEduardo, 'days');
 
-[Link](url) and ![Image](src)
-```
+    document.getElementById("idadeEduardo").innerHTML = nascimentoEduardo.fromNow(true);
+    document.getElementById("dataHenrique").innerHTML = dataHenriqueMesmaIdade.format('LL');
+    document.getElementById("tempoPassado").innerHTML = moment().diff(dataHenriqueMesmaIdade, 'days');
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/crineu/crineu.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+</script>
