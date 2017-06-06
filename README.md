@@ -2,7 +2,7 @@
 
 > <span id="birthdayHenrique"></span>
 
-Tinha a idade do mano em __<span id="passadoHenrique"></span>__
+Tinha a idade do mano mais ou menos em __<span id="passadoHenrique"></span>__
 
 
 ---
@@ -11,19 +11,18 @@ Tinha a idade do mano em __<span id="passadoHenrique"></span>__
 # Eduardinho | __<span id="idadeEduardo"></span>__
 
 > <span id="birthDayEduardo"></span>
->
->
-> <span id="diferencaIdade"></span> mais novo.
 
-Vai ter a idade do mano em __<span id="futuroEduardo"></span>__
+<span id="diferencaIdade"></span> mais novo.
+
+Vai ter a idade do mano aproximadamente em __<span id="futuroEduardo"></span>__
 
 
 <script src="/moment.min.js"></script>
 <script src="/moment.pt-br.js"></script>
 
 <script type="text/javascript">
-    var nascimentoHenrique = moment('20130826');
-    var nascimentoEduardo  = moment('20161201');
+    var nascimentoHenrique = moment('2013/08/26 18:05:00');
+    var nascimentoEduardo  = moment('2016/12/01 09:02:48');
 
     var diferencaIdade = moment.duration(nascimentoEduardo.diff(nascimentoHenrique));
 
@@ -50,9 +49,9 @@ Vai ter a idade do mano em __<span id="futuroEduardo"></span>__
             text += duration.years() + " anos, ";
         }
         if (duration.months() > 0) {
-            text += duration.months() + " meses e ";
+            text += duration.months() + " meses, ";
         }
-        return  text + duration.days() + " dias";
+        return  text + duration.days() + " dias e " + duration.hours() + " horas";
     }
 
 </script>
