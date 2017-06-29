@@ -2,8 +2,9 @@
 
 > <span id="id_bday_mcqueen"></span>
 
-Tinha a idade do mano mais ou menos em __<span id="id_past_mcqueen"></span>__
+De parabéns em __<span id="id_next_mcqueen"></span>__.
 
+Tinha a idade do mano mais ou menos em __<span id="id_past_mcqueen"></span>__
 
 ---
 
@@ -14,36 +15,48 @@ Tinha a idade do mano mais ou menos em __<span id="id_past_mcqueen"></span>__
 
 <span id="id_age_diff"></span> mais novo.
 
-Vai ter a idade do mano aproximadamente em __<span id="id_futu_bolinha"></span>__
+De parabéns em __<span id="id_next_bolinha"></span>__.
+
+Terá a idade do mano ali por __<span id="id_futu_bolinha"></span>__
 
 
 <script src="/moment.min.js"></script>
 <script src="/moment.pt-br.js"></script>
 
 <script type="text/javascript">
-    var moment_mcqueen = moment('2013-08-26 09:02 -0300', 'YYYY-MM-DD HH:mm Z');
-    var moment_bolinha = moment('2016-12-01 18:05 -0300', 'YYYY-MM-DD HH:mm Z');
+    // mo_* represents a 'moment'   = point in time
+    // du_* represents a 'duration' = time interval
 
-    var dur_age_diff = moment.duration(moment_bolinha.diff(moment_mcqueen));
+    var mo_mcqueen = moment('2013-08-26 09:02 -0300', 'YYYY-MM-DD HH:mm Z');
+    var mo_bolinha = moment('2016-12-01 18:05 -0300', 'YYYY-MM-DD HH:mm Z');
 
-    var dur_age_mcqueen = moment.duration(moment().diff(moment_mcqueen));
-    var dur_age_bolinha = moment.duration(moment().diff(moment_bolinha));
+    var du_age_diff = moment.duration(mo_bolinha.diff(mo_mcqueen));
 
-    var moment_past_mcqueen = moment_mcqueen.clone().add(dur_age_bolinha);
-    var moment_futu_bolinha = moment_bolinha.clone().add(dur_age_mcqueen);
+    var du_age_mcqueen = moment.duration(moment().diff(mo_mcqueen));
+    var du_age_bolinha = moment.duration(moment().diff(mo_bolinha));
 
-    document.getElementById("id_bday_mcqueen").innerHTML = moment_mcqueen.format('LL');
-    document.getElementById("id_bday_bolinha").innerHTML = moment_bolinha.format('LL');
+    var mo_next_mcqueen = mo_mcqueen.clone().add(du_age_mcqueen.years() + 1, 'years');
+    var mo_next_bolinha = mo_bolinha.clone().add(du_age_bolinha.years() + 1, 'years');
 
-    document.getElementById("id_age_diff").innerHTML = dur2string(dur_age_diff);
+    var mo_past_mcqueen = mo_mcqueen.clone().add(du_age_bolinha);
+    var mo_futu_bolinha = mo_bolinha.clone().add(du_age_mcqueen);
 
-    document.getElementById("id_age_mcqueen").innerHTML = dur2string(dur_age_mcqueen);
-    document.getElementById("id_age_bolinha").innerHTML = dur2string(dur_age_bolinha);
 
-    document.getElementById("id_past_mcqueen").innerHTML = moment_past_mcqueen.format('LL');
-    document.getElementById("id_futu_bolinha").innerHTML = moment_futu_bolinha.format('LL');
+    document.getElementById("id_bday_mcqueen").innerHTML = mo_mcqueen.format('LL');
+    document.getElementById("id_bday_bolinha").innerHTML = mo_bolinha.format('LL');
 
-    function dur2string(duration) {
+    document.getElementById("id_age_diff").innerHTML = du_to_str(du_age_diff);
+
+    document.getElementById("id_age_mcqueen").innerHTML = du_to_str(du_age_mcqueen);
+    document.getElementById("id_age_bolinha").innerHTML = du_to_str(du_age_bolinha);
+
+    document.getElementById("id_next_mcqueen").innerHTML = du_to_str(moment.duration(mo_next_mcqueen.diff(moment())));
+    document.getElementById("id_next_bolinha").innerHTML = du_to_str(moment.duration(mo_next_bolinha.diff(moment())));
+
+    document.getElementById("id_past_mcqueen").innerHTML = mo_past_mcqueen.format('LL');
+    document.getElementById("id_futu_bolinha").innerHTML = mo_futu_bolinha.format('LL');
+
+    function du_to_str(duration) {
         var text = "";
         if (duration.years() > 0) {
             text += duration.years() + " anos, ";
