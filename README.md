@@ -2,7 +2,7 @@
 
 > <span id="id_bday_mcqueen"></span>
 
-De parabéns em __<span id="id_next_mcqueen"></span>__.
+Próxima translação terrestre em __<span id="id_next_mcqueen"></span>__.
 
 Tinha a idade do mano mais ou menos em __<span id="id_past_mcqueen"></span>__
 
@@ -15,7 +15,7 @@ Tinha a idade do mano mais ou menos em __<span id="id_past_mcqueen"></span>__
 
 <span id="id_age_diff"></span> mais novo.
 
-De parabéns em __<span id="id_next_bolinha"></span>__.
+Próxima translação terrestre em __<span id="id_next_bolinha"></span>__.
 
 Terá a idade do mano ali por __<span id="id_futu_bolinha"></span>__
 
@@ -57,14 +57,22 @@ Terá a idade do mano ali por __<span id="id_futu_bolinha"></span>__
     document.getElementById("id_futu_bolinha").innerHTML = mo_futu_bolinha.format('LL');
 
     function du_to_str(duration) {
+        var years  = duration.years();
+        var months = duration.months();
+        var days   = duration.days();
+        var hours  = duration.hours();
         var text = "";
-        if (duration.years() > 0) {
-            text += duration.years() + " anos, ";
+
+        if (years > 0) {
+            text += years + (years == 1 ? " ano, " : " anos, ");
         }
-        if (duration.months() > 0) {
-            text += duration.months() + " meses, ";
+        if (months > 0) {
+            text += months + (months == 1 ? " mês, " : " meses, ");
         }
-        return  text + duration.days() + " dias e " + duration.hours() + " horas";
+
+        text += days + (days == 1 ? " dia e " : " dias e ");
+        text += hours + (hours == 1 ? " hora" : " horas");
+        return text;
     }
 
 </script>
