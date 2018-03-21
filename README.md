@@ -1,6 +1,6 @@
 # Henriquinho | __<span id="id_age_mcqueen"></span>__
 
-> <span id="id_bday_mcqueen"></span> -- <span id="id_days_mcqueen"></span> dias
+> <span id="id_bday_mcqueen"></span> ~ <span id="id_days_mcqueen"></span> dias
 
 Translação terrestre em __<span id="id_next_mcqueen"></span>__.
 
@@ -9,11 +9,13 @@ Tinha a idade do mano mais ou menos em __<span id="id_past_mcqueen"></span>__
 ---
 
 
+__<span id="id_age_diff"></span>__ depois...
+
+---
+
 # Eduardinho | __<span id="id_age_bolinha"></span>__
 
-> <span id="id_bday_bolinha"></span> -- <span id="id_days_bolinha"></span> dias
-
-<span id="id_age_diff"></span> mais novo.
+> <span id="id_bday_bolinha"></span> ~ <span id="id_days_bolinha"></span> dias
 
 Translação terrestre em __<span id="id_next_bolinha"></span>__.
 
@@ -49,8 +51,8 @@ Terá a idade do mano ali por __<span id="id_futu_bolinha"></span>__
 
     document.getElementById("id_age_mcqueen").innerHTML = du_to_str(du_age_mcqueen);
     document.getElementById("id_age_bolinha").innerHTML = du_to_str(du_age_bolinha);
-    document.getElementById("id_days_mcqueen").innerHTML = Math.round(du_age_mcqueen.asDays());
-    document.getElementById("id_days_bolinha").innerHTML = Math.round(du_age_bolinha.asDays());
+    document.getElementById("id_days_mcqueen").innerHTML = Math.floor(du_age_mcqueen.asDays()).toLocaleString('pt');
+    document.getElementById("id_days_bolinha").innerHTML = Math.floor(du_age_bolinha.asDays()).toLocaleString('pt');
 
     document.getElementById("id_next_mcqueen").innerHTML = du_to_str(moment.duration(mo_next_mcqueen.diff(moment())));
     document.getElementById("id_next_bolinha").innerHTML = du_to_str(moment.duration(mo_next_bolinha.diff(moment())));
