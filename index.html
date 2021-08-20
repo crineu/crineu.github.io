@@ -21,7 +21,7 @@
 <body>
     <section class="page-header">
         <h1 class="project-name">Meus piá em <input id="date_input" type="date" class="btn" onchange="update(event);"></h1>
-        <h2 class="project-tagline">Cálculos de idades de crianças</h2>
+        <h2 class="project-tagline">Cálculo da idade das criança</h2>
     </section>
 
     <section class="main-content">
@@ -69,14 +69,16 @@
 
             var du_age_diff = moment.duration(mo_bolinha.diff(mo_mcqueen));
 
-            var du_age_mcqueen = moment.duration(BASE.diff(mo_mcqueen));
-            var du_age_bolinha = moment.duration(BASE.diff(mo_bolinha));
+            var du_age_mcqueen = moment.duration(moment().diff(mo_mcqueen));
+            var du_age_bolinha = moment.duration(moment().diff(mo_bolinha));
+            var du_age_base_mcqueen = moment.duration(BASE.diff(mo_mcqueen));
+            var du_age_base_bolinha = moment.duration(BASE.diff(mo_bolinha));
 
             var mo_next_mcqueen = mo_mcqueen.clone().add(du_age_mcqueen.years() + 1, 'years');
             var mo_next_bolinha = mo_bolinha.clone().add(du_age_bolinha.years() + 1, 'years');
 
-            var mo_past_mcqueen = mo_mcqueen.clone().add(du_age_bolinha);
-            var mo_futu_bolinha = mo_bolinha.clone().add(du_age_mcqueen);
+            var mo_past_mcqueen = mo_mcqueen.clone().add(du_age_base_bolinha);
+            var mo_futu_bolinha = mo_bolinha.clone().add(du_age_base_mcqueen);
 
 
             document.getElementById("id_bday_mcqueen").innerHTML = mo_mcqueen.format('LL');
@@ -84,10 +86,10 @@
 
             document.getElementById("id_age_diff").innerHTML = du_to_str(du_age_diff);
 
-            document.getElementById("id_age_mcqueen").innerHTML = du_to_str(du_age_mcqueen);
-            document.getElementById("id_age_bolinha").innerHTML = du_to_str(du_age_bolinha);
-            document.getElementById("id_days_mcqueen").innerHTML = Math.floor(du_age_mcqueen.asDays()).toLocaleString('pt');
-            document.getElementById("id_days_bolinha").innerHTML = Math.floor(du_age_bolinha.asDays()).toLocaleString('pt');
+            document.getElementById("id_age_mcqueen").innerHTML = du_to_str(du_age_base_mcqueen);
+            document.getElementById("id_age_bolinha").innerHTML = du_to_str(du_age_base_bolinha);
+            document.getElementById("id_days_mcqueen").innerHTML = Math.floor(du_age_base_mcqueen.asDays()).toLocaleString('pt');
+            document.getElementById("id_days_bolinha").innerHTML = Math.floor(du_age_base_bolinha.asDays()).toLocaleString('pt');
 
             document.getElementById("id_next_mcqueen").innerHTML = du_to_str(moment.duration(mo_next_mcqueen.diff(moment())));
             document.getElementById("id_next_bolinha").innerHTML = du_to_str(moment.duration(mo_next_bolinha.diff(moment())));
@@ -98,19 +100,17 @@
             function du_to_str(duration) {
                 var years = duration.years();
                 var months = duration.months();
-                var days = duration.days();
-                var hours = duration.hours();
+                var days = duration.days() + 1;
                 var text = "";
 
                 if (years > 0) {
-                    text += years + (years == 1 ? " ano, " : " anos, ");
+                    text += years + (years < 2 ? " ano, " : " anos, ");
                 }
                 if (months > 0) {
-                    text += months + (months == 1 ? " mês, " : " meses, ");
+                    text += months + (months < 2 ? " mês e " : " meses e ");
                 }
 
-                text += days + (days < 2 ? " dia e " : " dias e ");
-                text += hours + (hours < 2 ? " hora" : " horas");
+                text += days + (days < 2 ? " dia" : " dias ");
                 return text;
             }
         }
