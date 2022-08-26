@@ -14,13 +14,18 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="./style.css">
 
-    <script src="./moment.min.js"></script>
-    <script src="./moment.pt-br.js"></script>
+    <script src="./dayjs.min.js"></script>
+    <script src="./pt-br.min.js"></script>
+    <script src="./duration.min.js"></script>
+    <script src="./localizedFormat.min.js"></script>
 </head>
+
 
 <body>
     <section class="page-header">
-        <h1 class="project-name">Meus piá em <input id="date_input" type="date" class="btn" onchange="update(event);"></h1>
+        <h1 class="project-name">Meus piá em
+            <input id="date_input" type="date" class="btn" onchange="update(event);">
+        </h1>
         <h2 class="project-tagline">Cálculo da idade das criança</h2>
     </section>
 
@@ -56,23 +61,28 @@
     </section>
 
     <script type="text/javascript">
-        document.getElementById("date_input").value = moment().format('yyyy-MM-DD');
+        dayjs().format();
+        dayjs.locale('pt-br');    // use locale globally
+        dayjs.extend(window.dayjs_plugin_duration);
+        dayjs.extend(window.dayjs_plugin_localizedFormat);
+
+        document.getElementById("date_input").value = dayjs().format('YYYY-MM-DD');
         update();
 
-        // mo_* represents a 'moment'   = point in time
+        // mo_* represents a 'dayjs'    = point in time
         // du_* represents a 'duration' = time interval
         function update() {
-            var BASE = moment(document.getElementById("date_input").value);
+            var BASE = dayjs(document.getElementById("date_input").value);
 
-            var henry = moment('2013-08-26T09:02-0300');
-            var diddy = moment('2016-12-01T18:05-0300');
+            var henry = dayjs('2013-08-26T09:02-0300');
+            var diddy = dayjs('2016-12-01T18:05-0300');
 
-            var du_age_diff = moment.duration(diddy.diff(henry));
+            var du_age_diff = dayjs.duration(diddy.diff(henry));
 
-            var du_age_henry = moment.duration(moment().diff(henry));
-            var du_age_diddy = moment.duration(moment().diff(diddy));
-            var du_age_base_henry = moment.duration(BASE.diff(henry));
-            var du_age_base_diddy = moment.duration(BASE.diff(diddy));
+            var du_age_henry = dayjs.duration(dayjs().diff(henry));
+            var du_age_diddy = dayjs.duration(dayjs().diff(diddy));
+            var du_age_base_henry = dayjs.duration(BASE.diff(henry));
+            var du_age_base_diddy = dayjs.duration(BASE.diff(diddy));
 
             var mo_next_henry = henry.clone().add(du_age_henry.years() + 1, 'years');
             var mo_next_diddy = diddy.clone().add(du_age_diddy.years() + 1, 'years');
@@ -91,8 +101,8 @@
             document.getElementById("id_days_henry").innerHTML = Math.floor(du_age_base_henry.asDays()).toLocaleString('pt');
             document.getElementById("id_days_diddy").innerHTML = Math.floor(du_age_base_diddy.asDays()).toLocaleString('pt');
 
-            document.getElementById("id_next_henry").innerHTML = du_to_str(moment.duration(mo_next_henry.diff(moment())));
-            document.getElementById("id_next_diddy").innerHTML = du_to_str(moment.duration(mo_next_diddy.diff(moment())));
+            document.getElementById("id_next_henry").innerHTML = du_to_str(dayjs.duration(mo_next_henry.diff(dayjs())));
+            document.getElementById("id_next_diddy").innerHTML = du_to_str(dayjs.duration(mo_next_diddy.diff(dayjs())));
 
             document.getElementById("id_past_henry").innerHTML = mo_past_henry.format('LL');
             document.getElementById("id_futu_diddy").innerHTML = mo_futu_diddy.format('LL');
@@ -114,7 +124,6 @@
                 return text;
             }
         }
-
     </script>
 
 </body>
