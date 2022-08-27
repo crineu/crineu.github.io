@@ -16,7 +16,6 @@
 
     <script src="./dayjs.min.js"></script>
     <script src="./pt-br.min.js"></script>
-    <script src="./duration.min.js"></script>
     <script src="./localizedFormat.min.js"></script>
 </head>
 
@@ -24,7 +23,7 @@
 <body>
     <section class="page-header">
         <h1 class="project-name">Meus piá em
-            <input id="date_input" type="date" class="btn" onchange="update(event);">
+            <input id="date_input" type="date" class="btn" onchange="atualizaCalculos(event);">
         </h1>
         <h2 class="project-tagline">Cálculo da idade das criança</h2>
     </section>
@@ -60,69 +59,74 @@
         </footer>
     </section>
 
+
+    <!-- Conferência https://calculocorreto.com/diferenca-entre-datas/ -->
     <script type="text/javascript">
         dayjs().format();
         dayjs.locale('pt-br');    // use locale globally
-        dayjs.extend(window.dayjs_plugin_duration);
         dayjs.extend(window.dayjs_plugin_localizedFormat);
 
+        // const HENRY = dayjs('2013-08-26T09:02-0300');
+        // const DIDDY = dayjs('2016-12-01T18:05-0300');
+        const HENRY = dayjs('2013-08-26');
+        const DIDDY = dayjs('2016-12-01');
+        document.getElementById("id_bday_henry").innerHTML = HENRY.format('LL');
+        document.getElementById("id_bday_diddy").innerHTML = DIDDY.format('LL');
+        document.getElementById("id_age_diff").innerHTML = data_dif(HENRY, DIDDY);
+
         document.getElementById("date_input").value = dayjs().format('YYYY-MM-DD');
-        update();
+        atualizaCalculos();
 
-        // mo_* represents a 'dayjs'    = point in time
-        // du_* represents a 'duration' = time interval
-        function update() {
-            var BASE = dayjs(document.getElementById("date_input").value);
+        function atualizaCalculos() {
+            const BASE = dayjs(document.getElementById("date_input").value);
 
-            var henry = dayjs('2013-08-26T09:02-0300');
-            var diddy = dayjs('2016-12-01T18:05-0300');
-
-            var du_age_diff = dayjs.duration(diddy.diff(henry));
-
-            var du_age_henry = dayjs.duration(dayjs().diff(henry));
-            var du_age_diddy = dayjs.duration(dayjs().diff(diddy));
-            var du_age_base_henry = dayjs.duration(BASE.diff(henry));
-            var du_age_base_diddy = dayjs.duration(BASE.diff(diddy));
-
-            var mo_next_henry = henry.clone().add(du_age_henry.years() + 1, 'years');
-            var mo_next_diddy = diddy.clone().add(du_age_diddy.years() + 1, 'years');
-
-            var mo_past_henry = henry.clone().add(du_age_base_diddy);
-            var mo_futu_diddy = diddy.clone().add(du_age_base_henry);
+            document.getElementById("id_age_henry").innerHTML  = data_dif(HENRY, BASE);
+            document.getElementById("id_age_diddy").innerHTML  = data_dif(DIDDY, BASE);
+            document.getElementById("id_days_henry").innerHTML = total_dias(HENRY, BASE);
+            document.getElementById("id_days_diddy").innerHTML = total_dias(DIDDY, BASE);
 
 
-            document.getElementById("id_bday_henry").innerHTML = henry.format('LL');
-            document.getElementById("id_bday_diddy").innerHTML = diddy.format('LL');
+            var idade_henry = BASE.diff(HENRY, 'year');
+            var idade_diddy = BASE.diff(DIDDY, 'year');
+            var prox_niver_henry = HENRY.add(idade_henry + 1, 'year');
+            var prox_niver_diddy = DIDDY.add(idade_diddy + 1, 'year');
 
-            document.getElementById("id_age_diff").innerHTML = du_to_str(du_age_diff);
+            document.getElementById("id_next_henry").innerHTML = data_dif(BASE, prox_niver_henry);
+            document.getElementById("id_next_diddy").innerHTML = data_dif(BASE, prox_niver_diddy);
 
-            document.getElementById("id_age_henry").innerHTML = du_to_str(du_age_base_henry);
-            document.getElementById("id_age_diddy").innerHTML = du_to_str(du_age_base_diddy);
-            document.getElementById("id_days_henry").innerHTML = Math.floor(du_age_base_henry.asDays()).toLocaleString('pt');
-            document.getElementById("id_days_diddy").innerHTML = Math.floor(du_age_base_diddy.asDays()).toLocaleString('pt');
 
-            document.getElementById("id_next_henry").innerHTML = du_to_str(dayjs.duration(mo_next_henry.diff(dayjs())));
-            document.getElementById("id_next_diddy").innerHTML = du_to_str(dayjs.duration(mo_next_diddy.diff(dayjs())));
+            var idade_henry_dias = BASE.diff(HENRY, 'days');
+            var idade_diddy_dias = BASE.diff(DIDDY, 'days');
+            var henry_com_idade_diddy = HENRY.add(idade_diddy_dias, 'days');
+            var diddy_com_idade_henry = DIDDY.add(idade_henry_dias, 'days');
 
-            document.getElementById("id_past_henry").innerHTML = mo_past_henry.format('LL');
-            document.getElementById("id_futu_diddy").innerHTML = mo_futu_diddy.format('LL');
+            document.getElementById("id_past_henry").innerHTML = henry_com_idade_diddy.format('LL');
+            document.getElementById("id_futu_diddy").innerHTML = diddy_com_idade_henry.format('LL');
+        }
 
-            function du_to_str(duration) {
-                var years = duration.years();
-                var months = duration.months();
-                var days = duration.days() + 1;
-                var text = "";
+        // Math.floor...toLocaleString para formatar casa de milhar: 2000 => 2.000
+        function total_dias(dataAnterior, dataRecente) {
+            return Math
+                .floor(dataRecente.diff(dataAnterior, 'day'))
+                .toLocaleString('pt');
+        }
 
-                if (years != 0) {
-                    text += years + (Math.abs(years) == 1 ? " ano, " : " anos, ");
-                }
-                if (months != 0) {
-                    text += months + (Math.abs(months) == 1 ? " mês e " : " meses e ");
-                }
+        function data_dif(dataAnterior, dataRecente) {
+            var text  = "";
+            var anos  = dataRecente.diff(dataAnterior, 'year');
+            var meses = dataRecente.diff(dataAnterior, 'month') - (anos * 12);
+            var dias  = dataRecente.diff(dataAnterior.add(anos, 'year').add(meses, 'month'), 'day');
 
-                text += days + (days == 1 ? " dia" : " dias ");
-                return text;
+            if (anos != 0) {
+                text += anos + (Math.abs(anos) < 2 ? " ano, " : " anos, ");
             }
+            if (meses != 0) {
+                text += meses + (Math.abs(meses) < 2 ? " mês e " : " meses e ");
+            }
+            if (dias != 0) {
+                text += dias + (dias == 1 ? " dia" : " dias ");
+            }
+            return text;
         }
     </script>
 
